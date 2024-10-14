@@ -15,6 +15,12 @@ pub mod crud_dapp {
         journal_entry.message = message;
         Ok(())
     }
+
+    pub fn update_journal_entry(ctx: Context<UpdateEntry>, _title: String, message: String) -> Result<()> {
+        let journal_entry = &mut ctx.accounts.journal_entry;
+        journal_entry.message = message;
+        Ok(())
+    }
 }
 
 #[account]
@@ -38,6 +44,25 @@ pub struct CreateEntry<'info> {
         bump,
         space= 8 + JournalEntry::INIT_SPACE,
         payer=owner,
+    )]
+    pub journal_entry: Account<'info, JournalEntry>,
+
+    #[account(mut)]
+    pub owner: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(title:String)]
+pub struct UpdateEntry<'info> {
+    #[account(
+        mut,
+        seeds=[title.as_bytes(), owner.key().as_ref()],
+        bump,
+        realloc = 8 + JournalEntry::INIT_SPACE,
+        realloc::payer = owner,
+        realloc::zero = true
     )]
     pub journal_entry: Account<'info, JournalEntry>,
 

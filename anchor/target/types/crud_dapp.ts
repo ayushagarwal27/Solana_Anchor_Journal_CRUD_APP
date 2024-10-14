@@ -62,6 +62,56 @@ export type CrudDapp = {
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "updateJournalEntry",
+      "discriminator": [
+        113,
+        164,
+        49,
+        62,
+        43,
+        83,
+        194,
+        172
+      ],
+      "accounts": [
+        {
+          "name": "journalEntry",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "title"
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "message",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
